@@ -29,7 +29,10 @@ import org.graylog2.database.MongoConnection;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Properties;
+import org.graylog2.incidents.IncidentDescription;
+import org.graylog2.incidents.IncidentManager;
 import org.graylog2.periodical.RRDThread;
 
 // TODO: indizes richtig setzen
@@ -139,6 +142,19 @@ public class Main {
             e.printStackTrace();
             System.exit(1); // Exit with error.
         }
+
+        ////////
+        ArrayList<IncidentDescription> descriptions = IncidentManager.fetchIncidentDescriptions();
+        Iterator iter = descriptions.iterator();
+        while (iter.hasNext()) {
+            IncidentDescription description = (IncidentDescription) iter.next();
+            System.out.println(description.getName());
+            System.out.println(description.getTimerange());
+            System.out.println(description.getConditions());
+        }
+        System.exit(1);
+        ///////
+
 
         // Start the Syslog thread that accepts syslog packages.
         SyslogServerThread syslogServerThread = new SyslogServerThread(Integer.parseInt(Main.masterConfig.getProperty("syslog_listen_port")));

@@ -114,4 +114,9 @@ public class Tools {
         return ret;
     }
 
+    public static int stringToInt(String s) {
+        double i = Double.parseDouble(s);
+        return (int) i;
+    }
+
 }

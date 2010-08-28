@@ -60,6 +60,12 @@ public class MongoBridge {
         return coll;
     }
 
+    public DBCollection getIncidentDescriptionColl() {
+        DBCollection coll = MongoConnection.getInstance().getDatabase().getCollection("incidentdescriptions");
+
+        return coll;
+    }
+
     public void insert(SyslogServerEventIF event) throws Exception {
         DBCollection coll = this.getMessagesColl();
 
