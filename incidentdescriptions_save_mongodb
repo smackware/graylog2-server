@@ -1,0 +1,15 @@
+> db.incidentdescriptions.save({ name:'test1', timerange:5, conditions: [ {type:1, subtype:1, value:'mama'}, {type:1, subtype:2, value: 5} ] });
+> db.incidentdescriptions.find();
+{ "_id" : ObjectId("4c78472430ef5a57ba518fd1"), "name" : "test1", "timerange" : 5, "conditions" : [
+  {
+    "type" : 1,
+    "subtype" : 1,
+    "value" : "mama"
+  },
+  {
+    "type" : 1,
+    "subtype" : 2,
+    "value" : 5
+  }
+] }
+
