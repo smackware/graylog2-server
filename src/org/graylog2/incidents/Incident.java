@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Lennart Koopmann <lennart@scopeport.org>
+ * Copyright 2010 Lennart Koopmann <lennart@socketfeed.com>
  *
  * This file is part of Graylog2.
  *
@@ -18,12 +18,15 @@
  *
  */
 
-/**
- * Incident.java: Lennart Koopmann <lennart@scopeport.org> | Aug 28, 2010 12:07:42 AM
- */
-
 package org.graylog2.incidents;
 
+/**
+ * Incident.java: Aug 28, 2010 12:07:42 AM
+ *
+ * Describes an occured incident.
+ *
+ * @author Lennart Koopmann <lennart@socketfeed.com>
+ */
 public class Incident {
 
 }

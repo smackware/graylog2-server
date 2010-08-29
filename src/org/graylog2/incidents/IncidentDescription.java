@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Lennart Koopmann <lennart@scopeport.org>
+ * Copyright 2010 Lennart Koopmann <lennart@socketfeed.com>
  *
  * This file is part of Graylog2.
  *
@@ -18,40 +18,64 @@
  *
  */
 
-/**
- * IncidentDescription.java: Lennart Koopmann <lennart@scopeport.org> | Aug 28, 2010 12:17:06 AM
- */
-
 package org.graylog2.incidents;
 
 import java.util.ArrayList;
 
+/**
+ * IncidentDescription.java: Aug 28, 2010 12:17:06 AM
+ *
+ * Describes an incident and it'S rules/conditions.
+ *
+ * @author Lennart Koopmann <lennart@socketfeed.com>
+ */
 public class IncidentDescription {
 
     private String name;
     private int timerange;
     private ArrayList<IncidentCondition> conditions;
 
+    /**
+     * The name of the incident.
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * The timerange to scan for condition hits in minutes.
+     * @param minutes
+     */
     public void setTimerange(int minutes) {
         this.timerange = minutes;
     }
 
+    /**
+     * The conditions to scan for as ArrayList.
+     * @param conditions
+     */
     public void setConditions(ArrayList<IncidentCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * @return The name of the incident
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * @return The timerange to scan for condition hits in minutes.
+     */
     public int getTimerange() {
         return this.timerange;
     }
 
+    /**
+     * @return All conditions to scan for as ArrayList.
+     */
     public ArrayList<IncidentCondition> getConditions() {
         return this.conditions;
     }

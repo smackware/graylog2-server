@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Lennart Koopmann <lennart@scopeport.org>
+ * Copyright 2010 Lennart Koopmann <lennart@socketfeed.com>
  *
  * This file is part of Graylog2.
  *
@@ -18,10 +18,6 @@
  *
  */
 
-/**
- * IncidentScanThread.java: Lennart Koopmann <lennart@scopeport.org> | Aug 29, 2010 11:27:50 PM
- */
-
 package org.graylog2.incidents;
 
 import java.util.ArrayList;
@@ -30,12 +26,24 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.graylog2.Log;
 
+/**
+ * IncidentScanThread.java: Aug 29, 2010 11:27:50 PM
+ * 
+ * Fetches all IncidentDescriptions every X (config: incident_check_interval) and runs scans forn them.
+ *
+ * @author Lennart Koopmann <lennart@socketfeed.com>
+ */
 public class IncidentScanThread extends Thread {
 
     private int interval = 0;
 
     ExecutorService threadPool = Executors.newCachedThreadPool();
 
+    /**
+     *
+     * @param interval How often ot run the scans in seconds.
+     * @throws Exception
+     */
     public IncidentScanThread(int interval) throws Exception {
         if (interval <= 0) {
             throw new Exception("Interval for IncidentScanThread must be higher than 0!");
@@ -44,6 +52,9 @@ public class IncidentScanThread extends Thread {
         this.interval = interval;
     }
 
+    /**
+     * Start the incident reporting/scanning. Runs forever.
+     */
     @Override public void run() {
         // Run forever.
         while (true) {

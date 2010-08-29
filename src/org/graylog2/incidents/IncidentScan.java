@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Lennart Koopmann <lennart@scopeport.org>
+ * Copyright 2010 Lennart Koopmann <lennart@socketfeed.com>
  *
  * This file is part of Graylog2.
  *
@@ -18,19 +18,30 @@
  *
  */
 
-/**
- * IncidentScan.java: Lennart Koopmann <lennart@scopeport.org> | Aug 30, 2010 12:04:59 AM
- */
-
 package org.graylog2.incidents;
 
+/**
+ * IncidentScan.java: Aug 30, 2010 12:04:59 AM
+ *
+ * Perform the scan for an IncidentDescription.
+ *
+ * @author Lennart Koopmann <lennart@socketfeed.com>
+ */
 public class IncidentScan extends Thread {
     private IncidentDescription description;
 
+    /**
+     * Scan for a given IncidentDescription.
+     *
+     * @param description The IncidentDescription to scan for.
+     */
     public IncidentScan(IncidentDescription description) {
         this.description = description;
     }
 
+    /**
+     * Start the scan.
+     */
     @Override public void run() {
         System.out.println(description.getName());
     }

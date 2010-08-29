@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Lennart Koopmann <lennart@scopeport.org>
+ * Copyright 2010 Lennart Koopmann <lennart@socketfeed.com>
  *
  * This file is part of Graylog2.
  *
@@ -18,35 +18,81 @@
  *
  */
 
-/**
- * IncidentCondition.java: Lennart Koopmann <lennart@scopeport.org> | Aug 28, 2010 12:52:33 AM
- */
-
 package org.graylog2.incidents;
 
+/**
+ * IncidentCondition.java: Aug 28, 2010 12:52:33 AM
+ *
+ * A condition of an incident. Every incident includes this conditions. Chained via AND/OR.
+ * 
+ * @author Lennart Koopmann <lennart@socketfeed.com>
+ */
 public class IncidentCondition {
 
+    /**
+     * Chain as AND
+     */
     public static final int TYPE_AND = 0;
+
+    /**
+     * Chain as OR
+     */
     public static final int TYPE_OR = 1;
 
+    /**
+     * Always true.
+     */
     public static final int SUBTYPE_NONE = 0;
+
+    /**
+     * Search for a substring in message.
+     */
     public static final int SUBTYPE_SUBSTRING = 1;
+
+    /**
+     * Match a hostname
+     */
     public static final int SUBTYPE_HOST = 2;
+
+    /**
+     * Match a severity.
+     */
     public static final int SUBTYPE_SEVERITY = 3;
-    public static final int SUBTYPE_REGEX = 4;
+
+    /**
+     * Match a facility.
+     */
+    public static final int SUBTYPE_FACILITY = 4;
+
+    /**
+     * Match REGEX on message.
+     */
+    public static final int SUBTYPE_REGEX = 5;
 
     private int type;
     private int subtype;
     private Object value;
 
+    /**
+     * The chaining type of this condition. (Constants: IncidentCondition.TYPE_*)
+     * @param type
+     */
     public void setType(int type) {
         this.type = type;
     }
 
+    /**
+     * The match type of this condition. (Constants: IncidentCondition.SUBTYPE_*)
+     * @param subtype
+     */
     public void setSubtype(int subtype) {
         this.subtype = subtype;
     }
 
+    /**
+     * The value to match for.
+     * @param value
+     */
     public void setValue(Object value) {
         this.value = value;
     }
