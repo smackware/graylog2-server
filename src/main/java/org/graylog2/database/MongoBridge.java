@@ -60,8 +60,8 @@ public class MongoBridge {
         return coll;
     }
 
-    public DBCollection getIncidentDescriptionColl() {
-        DBCollection coll = MongoConnection.getInstance().getDatabase().getCollection("incidentdescriptions");
+    public DBCollection getIncidentColl() {
+        DBCollection coll = MongoConnection.getInstance().getDatabase().getCollection("incidents");
 
         return coll;
     }

@@ -40,7 +40,7 @@ public class IncidentManager {
         ArrayList<IncidentDescription> descriptions = new ArrayList<IncidentDescription>();
 
         MongoBridge mongo = new MongoBridge();
-        DBCollection coll = mongo.getIncidentDescriptionColl();
+        DBCollection coll = mongo.getIncidentColl();
 
         DBCursor cursor = coll.find();
 

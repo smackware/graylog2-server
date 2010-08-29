@@ -31,11 +31,8 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import org.graylog2.incidents.IncidentDescription;
-import org.graylog2.incidents.IncidentManager;
+import org.graylog2.incidents.IncidentScanThread;
 import org.graylog2.periodical.RRDThread;
-
-// TODO: indizes richtig setzen
 
 /**
  *
@@ -80,6 +77,7 @@ public class Main {
         requiredConfigFields.add("messages_collection_size");
         requiredConfigFields.add("use_gelf");
         requiredConfigFields.add("gelf_listen_port");
+        requiredConfigFields.add("incident_check_interval");
         requiredConfigFields.add("rrd_storage_dir");
 
         // Check if all required configuration fields are set.
@@ -142,26 +140,13 @@ public class Main {
             System.exit(1); // Exit with error.
         }
 
-        ////////
-        ArrayList<IncidentDescription> descriptions = IncidentManager.fetchIncidentDescriptions();
-        Iterator iter = descriptions.iterator();
-        while (iter.hasNext()) {
-            IncidentDescription description = (IncidentDescription) iter.next();
-            System.out.println(description.getName());
-            System.out.println(description.getTimerange());
-            System.out.println(description.getConditions());
-        }
-        System.exit(1);
-        ///////
-
-
         // Start the Syslog thread that accepts syslog packages.
         SyslogServerThread syslogServerThread = new SyslogServerThread(Integer.parseInt(Main.masterConfig.getProperty("syslog_listen_port")));
         syslogServerThread.start();
 
         // Check if the thread started up completely.
         try { Thread.sleep(1000); } catch(InterruptedException e) {}
-        if(syslogCoreThread.isAlive()) {
+        if(syslogCoreThread != null && syslogCoreThread.isAlive()) {
             System.out.println("[x] Syslog server thread is up.");
         } else {
             System.out.println("Could not start syslog server core thread. Do you have permissions to listen on port " + Main.masterConfig.getProperty("syslog_listen_port") + "?");
@@ -176,16 +161,26 @@ public class Main {
         }
 
          // Start RRD writer thread.
-        //if (GELF.isEnabled()) { XXX: TODO
-            RRDThread rrdThread = new RRDThread();
-            rrdThread.start();
-            System.out.println("[x] RRD writer thread is up.");
-        //}
+         RRDThread rrdThread = new RRDThread();
+         rrdThread.start();
+         System.out.println("[x] RRD writer thread is up.");
 
         // Start the thread that distincts hosts.
         HostDistinctThread hostDistinctThread = new HostDistinctThread();
         hostDistinctThread.start();
         System.out.println("[x] Host distinction thread is up.");
+
+        // Start the thread that checks for incidents.
+        IncidentScanThread incidentScanThread;
+        try {
+            incidentScanThread = new IncidentScanThread(Integer.parseInt(Main.masterConfig.getProperty("incident_check_interval")));
+            incidentScanThread.run();
+        } catch (Exception e) {
+            System.out.println("Error in incident scanner thread: " + e.toString());
+            System.exit(1); // Exit with error.
+        }
+
+        System.out.println("[x] Incident scan thread is up.");
 
         System.out.println("[x] Graylog2 up and running.");
     }
