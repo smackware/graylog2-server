@@ -19,32 +19,19 @@
  */
 
 /**
- * SyslogServerThread.java: Lennart Koopmann <lennart@scopeport.org> | May 17, 2010 9:23:33 PM
+ * IncidentScan.java: Lennart Koopmann <lennart@scopeport.org> | Aug 30, 2010 12:04:59 AM
  */
 
-package org.graylog2.messagehandlers.syslog;
+package org.graylog2.incidents;
 
-import org.graylog2.Main;
-import org.productivity.java.syslog4j.server.SyslogServer;
-import org.productivity.java.syslog4j.server.SyslogServerIF;
+public class IncidentScan extends Thread {
+    private IncidentDescription description;
 
-
-public class SyslogServerThread extends Thread {
-
-    private int port = 0;
-
-    public SyslogServerThread(int port) {
-        this.port = port;
+    public IncidentScan(IncidentDescription description) {
+        this.description = description;
     }
 
     @Override public void run() {
-        String syslog_protocol = Main.masterConfig.getProperty("syslog_protocol");
-        SyslogServerIF syslogServer = SyslogServer.getThreadedInstance(syslog_protocol);
-        
-        syslogServer.getConfig().setPort(port);
-        syslogServer.getConfig().addEventHandler(new SyslogEventHandler());
-
-        Main.syslogCoreThread = syslogServer.getThread();
+        System.out.println(description.getName());
     }
-
 }
