@@ -20,6 +20,12 @@
 
 package org.graylog2.incidents;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import org.graylog2.Log;
+import org.graylog2.database.MongoBridge;
+
 /**
  * IncidentScan.java: Aug 30, 2010 12:04:59 AM
  *
@@ -43,6 +49,34 @@ public class IncidentScan extends Thread {
      * Start the scan.
      */
     @Override public void run() {
-        System.out.println(description.getName());
+        this.incidentDebugLog("Scanning for incident: " + description.getName());
+
+        // Get a cursor on the messages in description scan timerange.
+        this.getMessagesInTimerage();
+
+        // Decide a strategy.
+        this.decideScanStragegy();
+    }
+
+    private DBCursor getMessagesInTimerage() {
+        MongoBridge mongo = new MongoBridge();
+        DBCollection coll = mongo.getMessagesColl();
+
+        int since = ((int) (System.currentTimeMillis()/1000))-description.getTimerange()*60;
+
+        this.incidentDebugLog("Getting all messages since UNIX " + since);
+
+        BasicDBObject query = new BasicDBObject();
+        query.put("created_at", new BasicDBObject("$gt", since));
+
+        return coll.find();
+    }
+
+    private void incidentDebugLog(String message) {
+        Log.info("Incident:  " + this.description.getName() + " - " + message);
+    }
+
+    private void decideScanStragegy() {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }
