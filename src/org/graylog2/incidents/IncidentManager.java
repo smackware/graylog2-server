@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Lennart Koopmann <lennart@scopeport.org>
+ * Copyright 2010 Lennart Koopmann <lennart@socketfeed.com>
  *
  * This file is part of Graylog2.
  *
@@ -18,10 +18,6 @@
  *
  */
 
-/**
- * IncidentManager.java: Lennart Koopmann <lennart@scopeport.org> | Aug 28, 2010 12:13:01 AM
- */
-
 package org.graylog2.incidents;
 
 import com.mongodb.BasicDBList;
@@ -34,8 +30,19 @@ import org.graylog2.Log;
 import org.graylog2.Tools;
 import org.graylog2.database.MongoBridge;
 
+/**
+ * IncidentManager.java: Aug 28, 2010 12:13:01 AM
+ *
+ * Master class to fetch Incidents and IncidentDescriptions
+ *
+ * @author Lennart Koopmann <lennart@socketfeed.com>
+ */
 public class IncidentManager {
 
+    /**
+     * Get all incident descriptions from MongoDB 'incidents' collection.
+     * @return ArrayList of all IncidentDescriptions
+     */
     public static ArrayList<IncidentDescription> fetchIncidentDescriptions() {
         ArrayList<IncidentDescription> descriptions = new ArrayList<IncidentDescription>();
 
@@ -90,6 +97,11 @@ public class IncidentManager {
         return descriptions;
     }
 
+    /**
+     * Validates the MongoDB document structure of an incident.
+     *
+     * @param doc The MongoDB DBObject to validate
+     */
     public static boolean validateIncidentDocumentStructure(DBObject doc) {
         if (doc.containsField("name") && doc.containsField("timerange") && doc.containsField("conditions")) {
             return true;
@@ -98,6 +110,11 @@ public class IncidentManager {
         return false;
     }
 
+    /**
+     * Validates the MongoDB document structure of an incident condition.
+     *
+     * @param doc The MongoDB DBObject to validate
+     */
     public static boolean validateConditionDocumentStructure(DBObject doc) {
         // Make sure all required fields are set.
         if (!doc.containsField("type") || !doc.containsField("subtype") || !doc.containsField("value")) {
