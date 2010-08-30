@@ -23,8 +23,19 @@ package org.graylog2.incidents;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.graylog2.Log;
 import org.graylog2.database.MongoBridge;
+import org.graylog2.incidents.scanstrategies.IncidentScanStrategyIF;
+import org.graylog2.incidents.scanstrategies.IncidentSingleScan;
+
+class MissingScanStrategyException extends Exception {
+
+    public MissingScanStrategyException() {
+    }
+
+}
 
 /**
  * IncidentScan.java: Aug 30, 2010 12:04:59 AM
@@ -51,11 +62,14 @@ public class IncidentScan extends Thread {
     @Override public void run() {
         this.incidentDebugLog("Scanning for incident: " + description.getName());
 
-        // Get a cursor on the messages in description scan timerange.
-        this.getMessagesInTimerage();
-
-        // Decide a strategy.
-        this.decideScanStragegy();
+        try {
+            // Decide a strategy.
+            IncidentScanStrategyIF scan = this.decideScanStragegy();
+            scan.scan(this.getMessagesInTimerage(), this.description);
+        } catch (MissingScanStrategyException ex) {
+            Log.crit("Missing scan strategy for IncidentDescription: " + this.description.getName());
+        }
+  
     }
 
     private DBCursor getMessagesInTimerage() {
@@ -76,7 +90,11 @@ public class IncidentScan extends Thread {
         Log.info("Incident:  " + this.description.getName() + " - " + message);
     }
 
-    private void decideScanStragegy() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private IncidentScanStrategyIF decideScanStragegy() throws MissingScanStrategyException {
+        if (this.description.getConditions().size() == 1) {
+            return new IncidentSingleScan();
+        }
+
+        throw new MissingScanStrategyException();
     }
 }
