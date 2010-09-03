@@ -23,8 +23,6 @@ package org.graylog2.incidents;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.graylog2.Log;
 import org.graylog2.database.MongoBridge;
 import org.graylog2.incidents.scanstrategies.IncidentScanStrategyIF;

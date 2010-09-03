@@ -174,7 +174,7 @@ public class Main {
         IncidentScanThread incidentScanThread;
         try {
             incidentScanThread = new IncidentScanThread(Integer.parseInt(Main.masterConfig.getProperty("incident_check_interval")));
-            incidentScanThread.run();
+            incidentScanThread.start();
         } catch (Exception e) {
             System.out.println("Error in incident scanner thread: " + e.toString());
             System.exit(1); // Exit with error.

@@ -77,6 +77,8 @@ public class GELFServer {
     }
 
     public void tearDown() {
-        this.serverSocket.close();
+        if (this.serverSocket != null) {
+            this.serverSocket.close();
+        }
     }
 }
