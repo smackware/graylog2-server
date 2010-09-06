@@ -97,4 +97,12 @@ public class IncidentCondition {
         this.value = value;
     }
 
+    /**
+     * Get a better, human readable formatted string of this condition.
+     * @return The formatted string
+     */
+    @Override public String toString() {
+        return "Type: " + this.type + ", Subtype: " + this.subtype + ", Value: " + this.value;
+    }
+
 }

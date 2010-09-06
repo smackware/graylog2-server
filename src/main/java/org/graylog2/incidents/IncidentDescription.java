@@ -31,16 +31,16 @@ import java.util.ArrayList;
  */
 public class IncidentDescription {
 
-    private String name;
+    private String title;
     private int timerange;
     private ArrayList<IncidentCondition> conditions;
 
     /**
      * The name of the incident.
-     * @param name
+     * @param title
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     /**
@@ -60,10 +60,10 @@ public class IncidentDescription {
     }
 
     /**
-     * @return The name of the incident
+     * @return The title of the incident
      */
-    public String getName() {
-        return this.name;
+    public String getTitle() {
+        return this.title;
     }
 
     /**
@@ -78,6 +78,20 @@ public class IncidentDescription {
      */
     public ArrayList<IncidentCondition> getConditions() {
         return this.conditions;
+    }
+
+    /**
+     * Get all conditions of this description in a human readable format.
+     * @return The formatted string
+     */
+    public String getConditionsAsString() {
+        String ret = "";
+
+        for(IncidentCondition condition : this.conditions) {
+            ret += condition.toString() + ", ";
+        }
+
+        return ret;
     }
 
 }

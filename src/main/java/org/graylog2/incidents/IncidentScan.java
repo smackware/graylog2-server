@@ -23,10 +23,12 @@ package org.graylog2.incidents;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
+import java.util.Date;
 import org.graylog2.Log;
 import org.graylog2.database.MongoBridge;
 import org.graylog2.incidents.scanstrategies.IncidentScanStrategyIF;
 import org.graylog2.incidents.scanstrategies.IncidentSingleScan;
+import org.graylog2.incidents.scanstrategies.InvalidStrategyException;
 
 class MissingScanStrategyException extends Exception {
 
@@ -58,14 +60,16 @@ public class IncidentScan extends Thread {
      * Start the scan.
      */
     @Override public void run() {
-        this.incidentDebugLog("Scanning for incident: " + description.getName());
+        this.incidentDebugLog("Scanning for incident: " + description.getTitle());
 
         try {
             // Decide a strategy.
             IncidentScanStrategyIF scan = this.decideScanStragegy();
-            scan.scan(this.getMessagesInTimerage(), this.description);
-        } catch (MissingScanStrategyException ex) {
-            Log.crit("Missing scan strategy for IncidentDescription: " + this.description.getName());
+            scan.scan();
+        } catch (MissingScanStrategyException e) {
+            Log.crit("Missing scan strategy for IncidentDescription: " + this.description.getTitle());
+        } catch (InvalidStrategyException e) {
+            Log.crit("Invalid scan strategy for IncidentDescription: " + this.description.getTitle() + " (" + e.toString() + ")");
         }
   
     }
@@ -74,23 +78,30 @@ public class IncidentScan extends Thread {
         MongoBridge mongo = new MongoBridge();
         DBCollection coll = mongo.getMessagesColl();
 
-        int since = ((int) (System.currentTimeMillis()/1000))-description.getTimerange()*60;
+        Date since = new Date(System.currentTimeMillis()-(description.getTimerange()*60*1000));
+        long sinceStamp = since.getTime()/1000;
 
-        this.incidentDebugLog("Getting all messages since UNIX " + since);
+        this.incidentDebugLog("Getting all messages since UNIX " + sinceStamp + " (" + since + ")");
 
+        // Build query.
         BasicDBObject query = new BasicDBObject();
-        query.put("created_at", new BasicDBObject("$gt", since));
+        query.put("created_at", new BasicDBObject("$gt", sinceStamp));
 
-        return coll.find();
+        // Build ordering.
+        BasicDBObject ordering = new BasicDBObject();
+        ordering.put("created_at", -1);
+
+        // Perform query.
+        return coll.find(query).sort(ordering);
     }
 
     private void incidentDebugLog(String message) {
-        Log.info("Incident:  " + this.description.getName() + " - " + message);
+        Log.info("Incident: " + this.description.getTitle() + " - " + message);
     }
 
     private IncidentScanStrategyIF decideScanStragegy() throws MissingScanStrategyException {
         if (this.description.getConditions().size() == 1) {
-            return new IncidentSingleScan();
+            return new IncidentSingleScan(this.getMessagesInTimerage(), this.description);
         }
 
         throw new MissingScanStrategyException();

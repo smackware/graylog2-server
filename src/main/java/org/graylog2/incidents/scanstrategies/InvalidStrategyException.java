@@ -21,30 +21,20 @@
 package org.graylog2.incidents.scanstrategies;
 
 /**
- * IncidentScanStrategyIF.java: Aug 30, 2010 10:15:49 PM
+ * InvalidStrategyException.java: Sep 6, 2010 6:34:49 PM
  *
- * Incident scan strategy interface
+ * Exception to be thrown in case of a wrongly chosen scan strategy. I.e. when you try to
+ * start a single scan strategy with more than one condition.
  *
- * @author Lennart Koopmann <lennart@socketfeed.com>
+ * @author: Lennart Koopmann <lennart@socketfeed.com>
  */
-public interface IncidentScanStrategyIF {
+public class InvalidStrategyException extends Exception {
 
     /**
-     * Perform the scan. Get the result via getResult()
-     * @throws InvalidStrategyException
+     * @param msg
      */
-    public void scan() throws InvalidStrategyException;
-
-    /**
-     * Get the result of the scan. Call scan() before.
-     * @return
-     */
-    public boolean getResult();
-
-    /**
-     * Calls an INFO log with prepended information of current scan.
-     * @param msg The message to log.
-     */
-    public void incidentLog(String msg);
+    public InvalidStrategyException(String msg) {
+        super(msg);
+    }
 
 }

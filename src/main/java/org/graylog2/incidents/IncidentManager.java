@@ -63,7 +63,7 @@ public class IncidentManager {
 
             // Create IncidentDescription object with basic information.
             IncidentDescription description = new IncidentDescription();
-            description.setName(dbObj.get("name").toString());
+            description.setTitle(dbObj.get("name").toString());
             description.setTimerange(Tools.stringToInt(dbObj.get("timerange").toString()));
 
             // Get conditions.
@@ -101,6 +101,7 @@ public class IncidentManager {
      * Validates the MongoDB document structure of an incident.
      *
      * @param doc The MongoDB DBObject to validate
+     * @return boolean
      */
     public static boolean validateIncidentDocumentStructure(DBObject doc) {
         if (doc.containsField("name") && doc.containsField("timerange") && doc.containsField("conditions")) {
@@ -114,6 +115,7 @@ public class IncidentManager {
      * Validates the MongoDB document structure of an incident condition.
      *
      * @param doc The MongoDB DBObject to validate
+     * @return boolean
      */
     public static boolean validateConditionDocumentStructure(DBObject doc) {
         // Make sure all required fields are set.

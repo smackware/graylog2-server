@@ -4,6 +4,7 @@ build/*
 dist/*
 build-before-profiler.xml
 nbbuild.xml
+nbactions.xml
 nbproject/*
 coverage
 build.xml
