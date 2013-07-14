@@ -20,42 +20,50 @@
 
 package org.graylog2.periodical;
 
-import org.apache.log4j.Logger;
-import org.graylog2.HostSystem;
-import org.graylog2.Tools;
-import org.graylog2.database.MongoBridge;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.graylog2.Core;
+import org.graylog2.MessageCounterImpl;
+import org.graylog2.plugin.MessageCounter;
 
 /**
- * ServerValueWriterThread.java
- *
  * Periodically writes server values to MongoDB.
  *
- * @author: Lennart Koopmann <lennart@socketfeed.com>
+ * @author Lennart Koopmann <lennart@socketfeed.com>
  */
-public class ServerValueWriterThread extends Thread {
+public class ServerValueWriterThread implements Runnable {
 
-    private static final Logger LOG = Logger.getLogger(ServerValueWriterThread.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ServerValueWriterThread.class);
+
+    public static final int PERIOD = 5;
+    public static final int INITIAL_DELAY = 0;
+
+    private final Core graylogServer;
+
+    public ServerValueWriterThread(Core graylogServer) {
+        this.graylogServer = graylogServer;
+    }
 
     /**
      * Start the thread. Runs forever.
      */
-    @Override public void run() {
-        // Run forever.
-        while (true) {
-            try {
-                HostSystem.writeSystemHealthHistorically();
+    @Override
+    public void run() {
+        try {
+            // ohai, we are alive. \o/
+            graylogServer.getServerValues().ping();
 
-                // Ping. (Server is running.)
-                MongoBridge m = new MongoBridge();
-                m.setSimpleServerValue("ping", Tools.getUTCTimestamp());
+            // Current throughput.
+            MessageCounter c = this.graylogServer.getMessageCounterManager().get(Core.MASTER_COUNTER_NAME);
+            graylogServer.getServerValues().writeThroughput(c.getThroughput(), c.getHighestThroughput());
+            c.resetThroughput(); // Reset five second throughput count.
 
-            } catch (Exception e) {
-                LOG.warn("Error in SystemValueHistoryWriterThread: " + e.getMessage(), e);
-            }
-            
-           // Run every 60 seconds.
-           try { Thread.sleep(60000); } catch(InterruptedException e) {}
+            /*
+             * Message queue size is written in BulkIndexerThread. More about the
+             * reason for that can be found there.
+             */
+        } catch (Exception e) {
+            LOG.warn("Error in ServerValue  WriterThread: " + e.getMessage(), e);
         }
     }
-
 }

@@ -6,41 +6,27 @@
 
     <groupId>org.graylog2</groupId>
     <artifactId>graylog2-server</artifactId>
-    <version>0.9.5p1</version>
+    <version>0.10.0</version>
     <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <metrics.version>2.1.2</metrics.version>
     </properties>
 
     <repositories>
-        <repository>
-            <id>clojars.org</id>
-            <url>http://clojars.org/repo</url>
-        </repository>
-        <repository>
-            <id>jboss</id>
-            <url>http://repository.jboss.com/maven2</url>
-        </repository>
-        <repository>
-            <id>scala-tools.org releases</id>
-            <name>Scala-tools Maven2 Releases Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
+       <repository>
+            <id>OSS Sonatype</id>
+            <name>Sonatype Opensource Release Repo</name>
+            <url>https://oss.sonatype.org/content/repositories/releases/</url>
         </repository>
     </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>scala-tools.org releases</id>
-            <name>Scala-tools Maven2 Releases Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <dependencies>
         <dependency>
-            <groupId>org.syslog4j</groupId>
-            <artifactId>syslog4j</artifactId>
-            <version>0.9.46</version>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>13.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
@@ -50,24 +36,13 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
-            <version>2.2</version>
+            <version>2.7.1</version>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.8.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest</artifactId>
-            <version>1.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>2.8.0</version>
+            <version>4.10</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -77,29 +52,121 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.rabbitmq</groupId>
-            <artifactId>amqp-client</artifactId>
-            <version>2.2.0</version>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-compiler</artifactId>
+            <version>5.3.0.Final</version>
         </dependency>
-        <dependency> 
-            <groupId>org.drools</groupId> 
-            <artifactId>drools-core</artifactId> 
-            <version>5.0.1</version> 
-        </dependency>
-        <dependency> 
-            <groupId>org.drools</groupId> 
-            <artifactId>drools-compiler</artifactId> 
-            <version>5.0.1</version> 
-        </dependency>
-        <dependency> 
-            <groupId>org.drools</groupId> 
-            <artifactId>drools-api</artifactId> 
-            <version>5.0.1</version> 
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>1.6.2</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.16</version>
+        </dependency>
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>1.18</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.joschi</groupId>
+            <artifactId>jadconfig</artifactId>
+            <version>0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.elasticsearch</groupId>
+        	<artifactId>elasticsearch</artifactId>
+        	<version>0.20.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock</artifactId>
+            <version>2.5.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>${metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-graphite</artifactId>
+            <version>${metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio-java-sdk</artifactId>
+            <version>3.3.9</version>
+            <classifier>jar-with-dependencies</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.disruptor</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>2.10.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>2.8.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-email</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.igniterealtime.smack</groupId>
+            <artifactId>smack</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.igniterealtime.smack</groupId>
+            <artifactId>smackx</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty</artifactId>
+            <version>3.5.11.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>com.librato.metrics</groupId>
+            <artifactId>metrics-librato</artifactId>
+            <version>2.1.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.graylog2</groupId>
+            <artifactId>graylog2-plugin</artifactId>
+            <version>0.10.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.productivity.java</groupId>
+            <artifactId>syslog4j-graylog2</artifactId>
+            <version>0.9.48-graylog2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.stephenc.high-scale-lib</groupId>
+            <artifactId>high-scale-lib</artifactId>
+            <version>1.1.4</version>
         </dependency>
     </dependencies>
 
@@ -108,10 +175,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.1</version>
+                <version>2.3.2</version>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -131,7 +198,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.1</version>
                 <configuration>
+                    <finalName>graylog2-server</finalName>
                     <archive>
                         <manifest>
                             <mainClass>org.graylog2.Main</mainClass>
@@ -140,8 +209,11 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2.1</version>
                 <configuration>
+                    <finalName>graylog2-server</finalName>
                     <archive>
                         <manifest>
                             <mainClass>org.graylog2.Main</mainClass>
@@ -151,31 +223,6 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
-                <version>2.15.0</version>
-                <configuration>
-                    <scalaVersion>2.8.0</scalaVersion>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>scala-compile-first</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>scala-test-compile</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
         <testResources>

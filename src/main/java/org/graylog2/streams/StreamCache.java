@@ -20,37 +20,33 @@
 
 package org.graylog2.streams;
 
-import java.util.ArrayList;
+import java.util.Set;
+import org.graylog2.Core;
+
 import org.graylog2.SimpleObjectCache;
+import org.graylog2.plugin.streams.Stream;
 
 /**
- * StreamCache.java: Mar 26, 2011 11:25:41 PM
- *
  * Singleton caching the already fetched streams.
  *
- * @author: Lennart Koopmann <lennart@socketfeed.com>
+ * @author Lennart Koopmann <lennart@socketfeed.com>
  */
-public class StreamCache extends SimpleObjectCache {
+public class StreamCache extends SimpleObjectCache<Set<Stream>> {
 
     private static StreamCache instance;
 
     private StreamCache() { }
 
-    public synchronized static StreamCache getInstance() {
+    public static synchronized StreamCache initialize(Core server) {
+        StreamCache streamCache = getInstance();
+        return streamCache;
+    }
+
+    public static synchronized StreamCache getInstance() {
         if (instance == null) {
             instance = new StreamCache();
         }
-        
+
         return instance;
     }
-
-    @Override
-    public ArrayList<Stream> get() {
-        return (ArrayList<Stream>) super.get();
-    }
-
-    public void set(ArrayList<Stream> streams) {
-        super.set(streams);
-    }
-
 }
