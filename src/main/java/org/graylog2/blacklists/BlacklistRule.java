@@ -24,11 +24,9 @@ import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
 
 /**
- * BlacklistRule.java: Mar 30, 2011 10:26:22 PM
- *
  * Representing rule of a blacklist.
  *
- * @author: Lennart Koopmann <lennart@socketfeed.com>
+ * @author Lennart Koopmann <lennart@socketfeed.com>
  */
 public class BlacklistRule {
 
